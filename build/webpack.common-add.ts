@@ -5,12 +5,23 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Webpackbar from 'webpackbar';
 import { webpackConfig } from './webpack.type';
 
+const pageLisy = ['main', 'index', 'other'];
 const config: webpackConfig = {
   mode: 'development',
-  entry: resolve(__dirname, '../src/main.ts'),
+  entry: {
+    main: './src/main.ts',
+    index: './src/pages/index/index.ts',
+    other: './src/pages/other/other.ts',
+    'better-draggable-ball': './src/components/better-draggable-ball/index.ts',
+  },
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: 'js/[name].[hash].js',
+    filename: (pathData) => {
+      if (pageLisy.includes(pathData.chunk?.name!)) {
+        return 'js/pages/[name].[hash].js';
+      }
+      return 'js/components/[name].[hash].js';
+    },
     clean: true,
   },
   module: {
@@ -69,9 +80,16 @@ const config: webpackConfig = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'vue单页面',
+      title: 'index页面',
       filename: 'index.html',
-      template: './public/index.html',
+      template: './src/pages/index/index.html',
+      chunks: ['index', 'main'],
+    }),
+    new HtmlWebpackPlugin({
+      title: 'other页面',
+      filename: 'other.html',
+      template: './src/pages/other/other.html',
+      chunks: ['other', 'main'],
     }),
     new ESLintPlugin({
       extensions: ['ts', 'js'],
@@ -85,7 +103,6 @@ const config: webpackConfig = {
       color: 'green',
       profile: true,
       basic: true,
-      reporter: { reporter: 'http://localhost:9000' },
     }),
   ],
   // 优化
