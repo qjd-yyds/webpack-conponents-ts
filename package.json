@@ -33,5 +33,13 @@
     "webpack-merge": "^5.8.0",
     "webpack-stats-progress": "^0.0.4",
     "webpackbar": "^5.0.0-3"
+  },
+  "dependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@vue/compiler-sfc": "^3.1.2",
+    "babel-loader": "^8.2.2",
+    "vue": "^3.1.2",
+    "vue-loader": "^16.2.0"
   }
 }

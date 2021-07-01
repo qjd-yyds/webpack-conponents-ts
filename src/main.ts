@@ -1,7 +1,7 @@
-import './styles/index.scss';
+import { createApp } from 'vue';
 
-// const test = document.createElement('div');
-// test.textContent = '我是测试';
-// document.body.appendChild(test);
+import App from './app.vue';
 
-document.write('123');
+const app = createApp(App);
+
+app.mount('#root');

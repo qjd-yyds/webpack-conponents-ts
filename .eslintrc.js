@@ -15,5 +15,7 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': 'off',
+    'no-unused-vars': 'off', // 关闭js规则
+    '@typescript-eslint/no-unused-vars': ['error'], // 调用ts规则
   },
 };

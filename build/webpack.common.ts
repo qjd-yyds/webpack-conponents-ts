@@ -3,18 +3,24 @@ import ESLintPlugin from 'eslint-webpack-plugin';
 import { resolve } from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Webpackbar from 'webpackbar';
+// 应用所有规则到vue文件中
+import { VueLoaderPlugin } from 'vue-loader';
 import { webpackConfig } from './webpack.type';
 
 const config: webpackConfig = {
   mode: 'development',
   entry: resolve(__dirname, '../src/main.ts'),
   output: {
-    path: resolve(__dirname, 'dist'),
-    filename: 'js/[name].[hash].js',
+    path: resolve(__dirname, '../dist'),
+    filename: 'js/[name].[chunkhash].js',
     clean: true,
   },
   module: {
     rules: [
+      {
+        test: /\.vue$/,
+        use: ['vue-loader'],
+      },
       {
         test: /\.s[ac]ss/i,
         use: [
@@ -41,7 +47,7 @@ const config: webpackConfig = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash].[ext]',
+              name: '[name].[chunkhash].[ext]',
               outputPath: 'image/',
             },
           },
@@ -54,22 +60,34 @@ const config: webpackConfig = {
           {
             loader: 'file-loader',
             options: {
-              name: '[name].[hash].[ext]',
+              name: '[name].[chunkhash].[ext]',
               outputPath: 'font/',
             },
           },
         ],
       },
       {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+      },
+      {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              appendTsSuffixTo: [/\.vue$/],
+            },
+          },
+        ],
         exclude: /node_modules/,
       },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'vue单页面',
+      title: '基于webpack从零搭建vue单页面应用',
       filename: 'index.html',
       template: './public/index.html',
     }),
@@ -78,15 +96,16 @@ const config: webpackConfig = {
       exclude: '/node_modules/',
     }),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].[hash].css',
+      filename: 'css/[name].[chunkhash].css',
     }),
     new Webpackbar({
-      name: '构建中',
+      name: '构建完成',
       color: 'green',
       profile: true,
       basic: true,
       reporter: { reporter: 'http://localhost:9000' },
     }),
+    new VueLoaderPlugin(),
   ],
   // 优化
   optimization: {
