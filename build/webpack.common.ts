@@ -5,15 +5,23 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Webpackbar from 'webpackbar';
 // 应用所有规则到vue文件中
 import { VueLoaderPlugin } from 'vue-loader';
-import { webpackConfig } from './webpack.type';
+import { WebpackConfig } from './webpack.type';
 
-const config: webpackConfig = {
+const config: WebpackConfig = {
   mode: 'development',
   entry: resolve(__dirname, '../src/main.ts'),
   output: {
     path: resolve(__dirname, '../dist'),
     filename: 'js/[name].[chunkhash].js',
     clean: true,
+  },
+  // 配置模块解析
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, '../src'),
+    },
+    // 解析模块
+    extensions: ['.js', '.json', '.jsx', '.tsx', '.ts'],
   },
   module: {
     rules: [
@@ -67,13 +75,18 @@ const config: webpackConfig = {
         ],
       },
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        use: {
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.tsx?$/,
         use: [
+          {
+            loader: 'babel-loader',
+          },
           {
             loader: 'ts-loader',
             options: {

@@ -24,6 +24,6 @@ export interface DevServer {
   // 代理
   proxy?: Iproxy;
 }
-export interface webpackConfig extends Configuration {
+export interface WebpackConfig extends Configuration {
   devServer?: DevServer;
 }

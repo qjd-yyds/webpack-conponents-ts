@@ -1,2 +1,3 @@
 interface Window {
+  user: string;
 }
