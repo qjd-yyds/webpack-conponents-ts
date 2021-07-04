@@ -21,7 +21,7 @@ const config: WebpackConfig = {
       '@': resolve(__dirname, '../src'),
     },
     // 解析模块
-    extensions: ['.js', '.json', '.jsx', '.tsx', '.ts'],
+    extensions: ['.js', '.json', '.jsx', '.tsx', '.ts', '.vue'],
   },
   module: {
     rules: [
